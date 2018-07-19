@@ -129,16 +129,15 @@ def game_design():
     draw_hole_r3(5)
 
     holes_list = draw_hole_r1(5) + draw_hole_r2(5) + draw_hole_r3(5)
-    print(holes_list)
 
     """ Adding in the ground hogs"""
 
-    def get_groundhog(n):
+    def get_groundhog():
     
         gh_color = pygame.Color(0, 0, 0)
         gh_width = 0
 
-        for x in range(n):
+        for x in range(random.randint(0, 15)):
             gh_location = random.choice(holes_list)
             individual_gh = Groundhog(gh_location, gh_color, gh_width)
             individual_gh.draw_gh()
@@ -152,7 +151,7 @@ def game_design():
         
         #print(gh_location)
         """
-    get_groundhog(5)
+    get_groundhog()
     
 
 game_design()
