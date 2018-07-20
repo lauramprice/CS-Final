@@ -27,134 +27,123 @@ class Hole(object):
 
 class Groundhog(object):
 
-    def __init__(self, Hole, gh_color, gh_width):
-        self.gh_pos = [Hole.pos[0] + (Hole.size[0] / 7), Hole.pos[1] - (Hole.size[1] * .15)]
-        self.gh_size = [Hole.size[0] * 0.70 , Hole.size[1] * 0.90]
+    def __init__(self, hole, gh_color, gh_width):
+        self.gh_pos = [int(hole.pos[0] + (hole.size[0] / 7)), int(hole.pos[1] - (hole.size[1] * .15))]
+        self.gh_size = [int(hole.size[0] * 0.70), int(hole.size[1] * 0.90)]
         self.gh_color = gh_color
         self.gh_width = gh_width
 
     def draw_gh(self):
-        """ Draws the groundhog box"""
-        pygame.draw.rect(window, self.gh_color, self.gh_pos + self.gh_size, self.gh_width)
+        """ manifests a box """
+        position = pygame.Rect(self.gh_pos, self.gh_size)
+        gh_image = pygame.image.load('/home/laprice/cscamp/CS-Final/gh.png').convert_alpha()
+        scaled_image = pygame.transform.scale(gh_image, self.gh_size)
+        return scaled_image, position
 
-def game_design():
+class WAM(object):
 
-    """ Game Window Additions and Background """
-    x = pygame.image.load('/home/laprice/cscamp/CS-Final/library.JPG').convert()
-    x=pygame.transform.scale(x,(1000,900))
-    window.blit(x, (0, 0))
+    def __init__(self):
+        """Window Background"""
+        self.background = pygame.image.load('/home/laprice/cscamp/CS-Final/library.JPG').convert()
+        self.background = pygame.transform.scale(self.background,(1000,900))
 
-    circle_color = pygame.Color(255, 51, 51)
-    circle_color2 = pygame.Color(0, 0, 0)
-    circle_pos = (970, 30)
-    circle_radius = 15
-    circle_radius2 = 17
-    circle_width = 0
+        """Window Buttons"""
+        self.exit_color = pygame.Color(255, 51, 51)
+        self.exit_color2 = pygame.Color(0, 0, 0)
+        self.exit_pos = (970, 30)
+        self.exit_radius = 15
+        self.exit_radius2 = 17
+        self.exit_width = 0
+        self.myfont = pygame.font.SysFont('Comic Sans MS', 35)
+        self.exit_button = self.myfont.render('X', False, (0, 0, 0))
 
-    pygame.draw.circle(window, circle_color2, circle_pos, circle_radius2, circle_width)
-    pygame.draw.circle(window, circle_color, circle_pos, circle_radius, circle_width)
+        """Information about individual holes"""
+        self.hole_color = pygame.Color(82, 54, 27)
+        self.hole_width = 0
 
-    myfont = pygame.font.SysFont('Comic Sans MS', 35)
-    textsurface = myfont.render('X', False, (0, 0, 0))
-    window.blit(textsurface,(963, 19))
+        self.row1_size = (60, 50)
+        self.row1_x_hole_pos = 235
+        self.row1_y_hole_pos = 535
+                
+        self.row2_size = (80, 70)
+        self.row2_x_hole_pos = 195
+        self.row2_y_hole_pos = 620
 
-
-    """ Creation of the Game Board"""
-    """ Guide board for the 3D perspective of the holes:
-    board_color = pygame.Color(85, 107, 47)
-    board_vertices = [(250, 560), (770, 560), (950, 840), (75, 840)]
-    board_width = 0
-
-    def draw_board(surface, board_color, board_vertices, board_width):
-        pygame.draw.polygon(surface, board_color, board_vertices, board_width)
-
-    draw_board(window, board_color, board_vertices, board_width)
-    """
-
-    # First row of holes
-    def draw_hole_r1(n):
-        holes_row1 = []
-        color = pygame.Color(82, 54, 27)
-        size = (60, 50)
-        width = 0
-        x_hole_pos = 235
-        y_hole_pos = 535
-
-        for x in range(n):
-            draw_h = Hole([x_hole_pos] + [y_hole_pos], size, color, width)
-            draw_h.draw_hole()
-            holes_row1 += [draw_h]
-            x_hole_pos += 115
-
-        return holes_row1
+        self.row3_size = (100, 90)
+        self.row3_x_hole_pos = 125
+        self.row3_y_hole_pos = 730
         
-    draw_hole_r1(5)
+        self.hole_list = self.generate_holes(5)
 
-    # Second row of holes
-    def draw_hole_r2(n):
-        holes_row2 = []
-        color = pygame.Color(82, 54, 27)
-        size = (80, 70)
-        width = 0
-        x_hole_pos = 195
-        y_hole_pos = 620
+        """Information about individual groundhogs"""
+        self.gh_color = pygame.Color(0, 0, 0)
+        self.gh_width = 0
+        self.gh_list = [0] * 15
 
-        for x in range(n):
-            draw_h = Hole([x_hole_pos] + [y_hole_pos], size, color, width)
-            draw_h.draw_hole()
-            holes_row2 += [draw_h]
-            x_hole_pos += 130
-
-        return holes_row2
-
-    draw_hole_r2(5)
-
-    # Third row of holes
-    def draw_hole_r3(n):
-        holes_row3 = []
-        color = pygame.Color(82, 54, 27)
-        size = (100, 90)
-        width = 0
-        x_hole_pos = 125
-        y_hole_pos = 730
+    def generate_holes(self, n):
+        holes_list = []
 
         for x in range(n):
-            draw_h = Hole([x_hole_pos] + [y_hole_pos], size, color, width)
-            draw_h.draw_hole()
-            holes_row3 += [draw_h]
-            x_hole_pos += 160
+            draw_h = Hole([self.row1_x_hole_pos] + [self.row1_y_hole_pos], self.row1_size, self.hole_color, self.hole_width)
+            holes_list += [draw_h]
+            self.row1_x_hole_pos += 115
 
-        return holes_row3
+        for x in range(n):
+            draw_h2 = Hole([self.row2_x_hole_pos] + [self.row2_y_hole_pos], self.row2_size, self.hole_color, self.hole_width)
+            holes_list += [draw_h2]
+            self.row2_x_hole_pos += 130
 
-    draw_hole_r3(5)
-
-    holes_list = draw_hole_r1(5) + draw_hole_r2(5) + draw_hole_r3(5)
-
-    """ Adding in the ground hogs"""
-
-    def get_groundhog():
+        for x in range(n):
+            draw_h3 = Hole([self.row3_x_hole_pos] + [self.row3_y_hole_pos], self.row3_size, self.hole_color, self.hole_width)
+            holes_list += [draw_h3]
+            self.row3_x_hole_pos += 160
     
-        gh_color = pygame.Color(0, 0, 0)
-        gh_width = 0
+        return holes_list
 
-        for x in range(random.randint(0, 15)):
-            gh_location = random.choice(holes_list)
-            individual_gh = Groundhog(gh_location, gh_color, gh_width)
-            individual_gh.draw_gh()
+    def generate_groundhog(self):
+        if 0 not in self.gh_list:
+            return 
 
-
-
-    """
-        x = pygame.image.load('/home/laprice/cscamp/CS-Final/gh.png').convert()
-        x = pygame.transform.scale(x ,(100,100))
-        window.blit(x, (gh_location[0], gh_location[1])
+        while True:
+            hole_choice = random.randint(0, len(self.hole_list) - 1)
+            
+            if self.gh_list[hole_choice] == 0:
+                break
         
-        #print(gh_location)
-        """
-    get_groundhog()
-    
+        individual_gh = Groundhog(self.hole_list[hole_choice], self.gh_color, self.gh_width)
+        self.gh_list[hole_choice] = individual_gh
 
-game_design()
+    def remove_groundhog(self, gh):
+        self.gh_list[gh] = 0
+
+wam = WAM()
+wam.generate_groundhog()
+
+def game_design(wam):
+    """ Runs the essential game features necessary every time"""
+
+    window.blit(wam.background, (0, 0))
+
+    pygame.draw.circle(window, wam.exit_color2, wam.exit_pos, wam.exit_radius2, wam.exit_width)
+    pygame.draw.circle(window, wam.exit_color, wam.exit_pos, wam.exit_radius, wam.exit_width)
+
+    window.blit(wam.exit_button,(963, 19))
+
+    for x in wam.hole_list:
+        x.draw_hole()
+
+    for x in wam.gh_list:
+        if x != 0:
+            img, pos = x.draw_gh()
+            window.blit(img, pos)
+            
+
+while True:
+    game_design(wam)
 
 
-pygame.display.flip()
+
+
+    pygame.display.flip()
+
+
