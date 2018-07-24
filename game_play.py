@@ -193,11 +193,11 @@ class WAM(object):
             self.generate_endscreen()
     
     def generate_endscreen(self):
-        self.window.blit(wam.background, (0, 0))
+        self.window.blit(self.background, (0, 0))
 
-        pygame.draw.circle(self.window, wam.exit_color2, wam.exit_pos, wam.exit_radius2, wam.exit_width)
-        pygame.draw.circle(self.window, wam.exit_color, wam.exit_pos, wam.exit_radius, wam.exit_width)
-        self.window.blit(wam.exit_button,(963, 19))
+        pygame.draw.circle(self.window, self.exit_color2, self.exit_pos, self.exit_radius2, self.exit_width)
+        pygame.draw.circle(self.window, self.exit_color, self.exit_pos, self.exit_radius, self.exit_width)
+        self.window.blit(self.exit_button,(963, 19))
 
         pygame.draw.rect(self.window, self.end_color2, (self.end_pos2, self.end_size2), self.end_width)
         pygame.draw.rect(self.window, self.end_color, (self.end_pos, self.end_size), self.end_width)
