@@ -2,6 +2,7 @@ import pygame
 import pygame.freetype
 import random
 import math
+import game_play
 
 rect_Rect= [418,380, 85,33]
 rect_color=pygame.Color(244,141,141)
@@ -24,6 +25,14 @@ instrcirc_pos2= (740,260)
 instrcirc_color2 = pygame.Color(163,19,19)
 instrcirc_radius2 = 11
 
+instrcirc_pos3= (963,19)
+instrcirc_color3= pygame.Color(0,0,0)
+instrcirc_radius3= 15
+
+instrcirc_pos4= (963,19)
+instrcirc_color4 = pygame.Color(163,19,19)
+instrcirc_radius4 = 13
+
 
 #Clickable areas that draws another screenn/surface
 
@@ -36,13 +45,13 @@ def Rect1 (surface,rect_color,rect_Rect,rect_width=0):
 pygame.init()
 window_size=[1000,900]
 window=pygame.display.set_mode(window_size)
-
+"""Library Image with Wompwomps"""
 x=pygame.image.load('/home/ooloyede/cs-camp/CS-Final/library1.xcf').convert()
 x=pygame.transform.scale(x,(1000,900))
 
 pygame.font.init() 
 
-#Game Title
+"""Main page buttons"""
 gtitle = pygame.font.SysFont('liberationsansnarrow', 45)
 textsurface1 = gtitle.render('Wack A Wompwomp!', False, (0, 0, 0))
 
@@ -61,39 +70,51 @@ textsurface5 =ginstrfont1.render('Click as many as you can in 30 secs!!', False,
 instr_exit = pygame.font.SysFont('Comic Sans MS', 30) 
 textsurface6= instr_exit.render('X', False, (0, 0, 0))
 
+instr_exit1 = pygame.font.SysFont('Comic Sans MS', 30) 
+textsurface7= instr_exit1.render('X', False, (0, 0, 0))
+
 showinstr = False
+playgame =False
 
 while True:
-    for y in pygame.event.get():
-        if y.type ==pygame.MOUSEBUTTONDOWN:
-            if pygame.Rect(rect_Rect2).collidepoint(y.pos):
-                showinstr = True
-            elif math.sqrt((y.pos[0]- instrcirc_pos2[0])**2+(y.pos[1]- instrcirc_pos2[1])**2)< instrcirc_radius2:
-                showinstr = False
-            elif pygame.Rect(rect_Rect).collidepoint(y.pos):
-                #break #game_design()
-                pass
-    "Window for Main Menu"
-    window.fill((0,0,0))
-    window.blit(x,(0,0))
-    window.blit(textsurface1,(270,280))
-    Rect1(window,rect_color, rect_Rect)
-    window.blit(textsurface2,(435,383))
-    Rect2(window,rect_color2, rect_Rect2)
-    window.blit(textsurface3,(385,430))
-    """Window for Instructions"""
-    if showinstr == True:
-        pygame.draw.rect(window,rect_color3,rect_Rect3,0)
-        pygame.draw.rect(window,rect_color4,rect_Rect4,0)
-        window.blit(textsurface4,(275,340))
-        window.blit(textsurface5,(310,420))   
-        pygame.draw.circle(window,instrcirc_color,instrcirc_pos, instrcirc_radius,0) 
-        pygame.draw.circle(window,instrcirc_color2,instrcirc_pos2 , instrcirc_radius2,0)  
-        window.blit(textsurface6,(733,252))
+    while True:
+        for y in pygame.event.get():
+            if y.type ==pygame.MOUSEBUTTONDOWN:
+                if pygame.Rect(rect_Rect2).collidepoint(y.pos):
+                    showinstr = True
+                elif math.sqrt((y.pos[0]- instrcirc_pos2[0])**2+(y.pos[1]- instrcirc_pos2[1])**2)< instrcirc_radius2:
+                    showinstr = False
+                elif math.sqrt(( y.pos[0]- instrcirc_pos4[0])**2+(y.pos[1]- instrcirc_pos4[1])**2)< instrcirc_radius4:
+                    pygame.quit()
+                    break
+                elif pygame.Rect(rect_Rect).collidepoint(y.pos):
+                    playgame =True
+                    
+        "Window for Main Menu"
+        window.fill((0,0,0))
+        window.blit(x,(0,0))
+        window.blit(textsurface1,(270,280))
+        Rect1(window,rect_color, rect_Rect)
+        window.blit(textsurface2,(435,383))
+        Rect2(window,rect_color2, rect_Rect2)
+        window.blit(textsurface3,(385,430))
+        pygame.draw.circle(window,instrcirc_color3,instrcirc_pos3, instrcirc_radius3,0) 
+        pygame.draw.circle(window,instrcirc_color4,instrcirc_pos4 , instrcirc_radius4,0) 
+        """Window for Instructions"""
+        if showinstr == True:
+            pygame.draw.rect(window,rect_color3,rect_Rect3,0)
+            pygame.draw.rect(window,rect_color4,rect_Rect4,0)
+            window.blit(textsurface4,(275,340))
+            window.blit(textsurface5,(310,420))   
+            pygame.draw.circle(window,instrcirc_color,instrcirc_pos, instrcirc_radius,0) 
+            pygame.draw.circle(window,instrcirc_color2,instrcirc_pos2 , instrcirc_radius2,0)  
+            window.blit(textsurface6,(733,252))
+            window.blit(textsurface6,(963,13))
 
-        
+        if playgame == True:
+            break   
                 
 
-    pygame.display.flip()
-#function to call Laura's loop
-input()
+        pygame.display.flip()
+    game_play.play(window)
+    
