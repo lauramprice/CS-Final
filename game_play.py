@@ -262,7 +262,7 @@ def play(window):
                 circle = pygame.draw.circle(wam.window, wam.exit_color2, wam.exit_pos, wam.exit_radius2, wam.exit_width)
                 if event.pos in circle:
                     pygame.quit()
-                    break
+                    return
 
 
         pygame.display.flip()
