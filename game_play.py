@@ -47,6 +47,9 @@ class WAM(object):
         """Window Background"""
         self.background = pygame.image.load('/home/laprice/cscamp/CS-Final/library.JPG').convert()
         self.background = pygame.transform.scale(self.background,(1000,900))
+        
+        """ Score """
+        self.score = 0
 
         """Window Buttons"""
         self.exit_color = pygame.Color(255, 51, 51)
@@ -57,6 +60,24 @@ class WAM(object):
         self.exit_width = 0
         self.myfont = pygame.font.SysFont('Comic Sans MS', 35)
         self.exit_button = self.myfont.render('X', False, (0, 0, 0))
+
+        self.gc_color = pygame.Color(255, 255, 255)
+        self.gc_color2 = pygame.Color(0, 0, 0)
+        self.gc_pos = (75, 165)
+        self.gc_pos2 = (70, 160)
+        self.gc_size = (125, 80)
+        self.gc_size2 = (135, 90)
+        self.gc_width = 0
+        self.gc_text = self.myfont.render('Timer:', False, (0, 0, 0))
+
+        self.st_color = pygame.Color(255, 255, 255)
+        self.st_color2 = pygame.Color(0, 0, 0)
+        self.st_pos = (695, 165)
+        self.st_pos2 = (690, 160)
+        self.st_size = (125, 80)
+        self.st_size2 = (135, 90)
+        self.st_width = 0
+        self.st_text = self.myfont.render('Score:', False, (0, 0, 0))
 
         """Information about individual holes"""
         self.hole_color = pygame.Color(82, 54, 27)
@@ -80,17 +101,14 @@ class WAM(object):
         self.gh_color = pygame.Color(0, 0, 0)
         self.gh_width = 0
         self.gh_list = [0] * 15
-        self.gh_num = random.randint(1, 2)
+        self.gh_num = random.randint(4, 5)
 
         """ Timing """
         self.game_clock = pygame.time.Clock()
         self.elapsed_time = 0
         self.gh_onscreen = random.randint(1000, 2500)
-        self.game_runtime = 10000
-        self.gh_countdown = random.randint(1000, 2000)
-
-        """ Score """
-        self.score = 0
+        self.game_runtime = 30000
+        self.gh_countdown = random.randint(1000, 3000)
 
         """ End Screen"""
         self.end_color = pygame.Color(200, 200, 200)
@@ -125,7 +143,7 @@ class WAM(object):
         return holes_list
 
     def generate_groundhog(self, gh_num):
-        print(self.gh_list)
+        
         for _ in range(gh_num):
             if 0 not in self.gh_list:
                 return 
@@ -151,11 +169,11 @@ class WAM(object):
         for x in range(len(self.gh_list)):
             if isinstance(self.gh_list[x], Groundhog):
                 if self.elapsed_time - self.gh_list[x].birthday > self.gh_onscreen:
-                    print(self.elapsed_time, "Removing gh")
+                    
                     self.remove_groundhog(x)
 
         if self.gh_countdown <= 0:
-            print(self.elapsed_time, "Adding gh")
+            
             self.generate_groundhog(self.gh_num)
             self.gh_countdown = random.randint(1000, 2000)
 
@@ -170,13 +188,16 @@ class WAM(object):
             self.generate_endscreen()
     
     def generate_endscreen(self):
+        window.blit(wam.background, (0, 0))
+        
         pygame.draw.rect(window, self.end_color2, (self.end_pos2, self.end_size2), self.end_width)
         pygame.draw.rect(window, self.end_color, (self.end_pos, self.end_size), self.end_width)
         end_score = self.score_font.render(str(self.score), False, (0, 0, 0))
 
         window.blit(self.end_text, (300, 350))
-        window.blit(end_score, (475, 425))
+        window.blit(end_score, (455, 425))
         window.blit(self.end_text2, (380, 520))
+        
 
 wam = WAM()
 wam.generate_groundhog(wam.gh_num)
@@ -185,6 +206,14 @@ def game_design(wam):
     """ Runs the essential game features necessary every time"""
 
     window.blit(wam.background, (0, 0))
+
+    pygame.draw.rect(window, wam.gc_color2, (wam.gc_pos2, wam.gc_size2), wam.gc_width)
+    pygame.draw.rect(window, wam.gc_color, (wam.gc_pos, wam.gc_size), wam.gc_width)
+    window.blit(wam.gc_text,(85, 170))
+
+    pygame.draw.rect(window, wam.st_color2, (wam.st_pos2, wam.st_size2), wam.st_width)
+    pygame.draw.rect(window, wam.st_color, (wam.st_pos, wam.st_size), wam.st_width)
+    window.blit(wam.st_text,(705, 170))
 
     pygame.draw.circle(window, wam.exit_color2, wam.exit_pos, wam.exit_radius2, wam.exit_width)
     pygame.draw.circle(window, wam.exit_color, wam.exit_pos, wam.exit_radius, wam.exit_width)
@@ -221,7 +250,6 @@ while True:
             if event.pos in circle:
                 pygame.quit()
                 break
-
 
 
     pygame.display.flip()
