@@ -2,7 +2,7 @@
 import random
 import pygame
 import math
-import game_menu
+
 
 pygame.init()
 pygame.font.init() 
@@ -242,9 +242,9 @@ def game_design(wam):
 def play(window):
     wam = WAM(window)
     wam.generate_groundhog(wam.gh_num)
+    running =True
 
-
-    while True:
+    while running:
 
         game_design(wam)
         
@@ -263,7 +263,10 @@ def play(window):
                             break
 
                 if math.sqrt((event.pos[0]-wam.exit_pos[0])**2 + (event.pos[1]-wam.exit_pos[1])**2) < wam.exit_radius2:
-                    return game_menu.menu()
+                    running=False
+                    return False
+                    
+                
 
 
         pygame.display.flip()

@@ -4,6 +4,7 @@ import random
 import math
 import game_play
 
+
 rect_Rect= [418,380, 85,33]
 rect_color=pygame.Color(244,141,141)
 
@@ -17,13 +18,13 @@ rect_Rect4= [250,250, 500,300]
 rect_color4=pygame.Color(255,255,255)
 
 
-instrcirc_pos= (740,260)
+instrcirc_pos= (732,270)
 instrcirc_color= pygame.Color(0,0,0)
-instrcirc_radius= 13
+instrcirc_radius= 15
 
-instrcirc_pos2= (740,260)
+instrcirc_pos2= (732,270)
 instrcirc_color2 = pygame.Color(163,19,19)
-instrcirc_radius2 = 11
+instrcirc_radius2 = 13
 
 instrcirc_pos3= (963,19)
 instrcirc_color3= pygame.Color(0,0,0)
@@ -112,7 +113,7 @@ def menu():
                 window.blit(textsurface5,(310,420))   
                 pygame.draw.circle(window,instrcirc_color,instrcirc_pos, instrcirc_radius,0) 
                 pygame.draw.circle(window,instrcirc_color2,instrcirc_pos2 , instrcirc_radius2,0)  
-                window.blit(textsurface6,(733,252))
+                window.blit(textsurface6,(725,261))
                 
 
             if playgame == True:
@@ -120,5 +121,5 @@ def menu():
                     
 
             pygame.display.flip()
-        game_play.play(window)
+        playgame=game_play.play(window)
 menu()  
