@@ -1,6 +1,7 @@
 import pygame
 import pygame.freetype
 import random
+import math
 
 rect_Rect= [418,380, 85,33]
 rect_color=pygame.Color(244,141,141)
@@ -8,8 +9,12 @@ rect_color=pygame.Color(244,141,141)
 rect_Rect2= [380,428, 158,33]
 rect_color2=pygame.Color(244,141,141)
 
-rect_Rect3= [250,250, 500,300]
-rect_color3=pygame.Color(255,255,255)
+rect_Rect3=[245,245,510,310] 
+rect_color3=pygame.Color(0,0,0)
+
+rect_Rect4= [250,250, 500,300]
+rect_color4=pygame.Color(255,255,255)
+
 
 instrcirc_pos= (740,260)
 instrcirc_color= pygame.Color(0,0,0)
@@ -53,7 +58,7 @@ textsurface4 =ginstrfont.render('Use the MOUSE to click on the groundhogs as the
 ginstrfont1= pygame.font.SysFont('lato', 23)
 textsurface5 =ginstrfont1.render('Click as many as you can in 30 secs!!', False, (242,79,79))
 
-instr_exit = pygame.font.SysFont('Comic Sans MS', 35) 
+instr_exit = pygame.font.SysFont('Comic Sans MS', 30) 
 textsurface6= instr_exit.render('X', False, (0, 0, 0))
 
 showinstr = False
@@ -63,10 +68,12 @@ while True:
         if y.type ==pygame.MOUSEBUTTONDOWN:
             if pygame.Rect(rect_Rect2).collidepoint(y.pos):
                 showinstr = True
-            if pygame.Rect(rect_Rect).collidepoint(y.pos):
+            elif math.sqrt((y.pos[0]- instrcirc_pos2[0])**2+(y.pos[1]- instrcirc_pos2[1])**2)< instrcirc_radius2:
+                showinstr = False
+            elif pygame.Rect(rect_Rect).collidepoint(y.pos):
                 #break #game_design()
                 pass
-
+    "Window for Main Menu"
     window.fill((0,0,0))
     window.blit(x,(0,0))
     window.blit(textsurface1,(270,280))
@@ -74,14 +81,18 @@ while True:
     window.blit(textsurface2,(435,383))
     Rect2(window,rect_color2, rect_Rect2)
     window.blit(textsurface3,(385,430))
-
+    """Window for Instructions"""
     if showinstr == True:
         pygame.draw.rect(window,rect_color3,rect_Rect3,0)
+        pygame.draw.rect(window,rect_color4,rect_Rect4,0)
         window.blit(textsurface4,(275,340))
         window.blit(textsurface5,(310,420))   
         pygame.draw.circle(window,instrcirc_color,instrcirc_pos, instrcirc_radius,0) 
         pygame.draw.circle(window,instrcirc_color2,instrcirc_pos2 , instrcirc_radius2,0)  
-        window.blit(textsurface6,(743,250))
+        window.blit(textsurface6,(733,252))
+
+        
+                
 
     pygame.display.flip()
 #function to call Laura's loop
