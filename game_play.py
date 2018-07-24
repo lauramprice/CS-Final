@@ -4,8 +4,8 @@ import pygame
 pygame.init()
 pygame.font.init() 
 
-window_size=[1000,900]
-window=pygame.display.set_mode(window_size)
+window_size = [1000,900]
+window = pygame.display.set_mode(window_size)
 
 class Hole(object):
 
@@ -68,6 +68,7 @@ class WAM(object):
         self.gc_size = (125, 80)
         self.gc_size2 = (135, 90)
         self.gc_width = 0
+        self.screenfont = pygame.font.SysFont('Comic Sans MS', 45)
         self.gc_text = self.myfont.render('Timer:', False, (0, 0, 0))
 
         self.st_color = pygame.Color(255, 255, 255)
@@ -78,6 +79,7 @@ class WAM(object):
         self.st_size2 = (135, 90)
         self.st_width = 0
         self.st_text = self.myfont.render('Score:', False, (0, 0, 0))
+        self.st_score = self.screenfont.render(str(self.score), False, (0, 0, 0))
 
         """Information about individual holes"""
         self.hole_color = pygame.Color(82, 54, 27)
@@ -106,9 +108,10 @@ class WAM(object):
         """ Timing """
         self.game_clock = pygame.time.Clock()
         self.elapsed_time = 0
-        self.gh_onscreen = random.randint(1000, 2500)
+        self.gh_onscreen = random.randint(1500, 2500)
         self.game_runtime = 30000
         self.gh_countdown = random.randint(1000, 3000)
+        self.time_left = 30000
 
         """ End Screen"""
         self.end_color = pygame.Color(200, 200, 200)
@@ -165,6 +168,7 @@ class WAM(object):
         self.game_clock.tick(fps)
         self.elapsed_time += self.game_clock.get_time()
         self.gh_countdown -= self.game_clock.get_time()
+        self.time_left -= self.game_clock.get_time()
 
         for x in range(len(self.gh_list)):
             if isinstance(self.gh_list[x], Groundhog):
@@ -189,7 +193,11 @@ class WAM(object):
     
     def generate_endscreen(self):
         window.blit(wam.background, (0, 0))
-        
+
+        pygame.draw.circle(window, wam.exit_color2, wam.exit_pos, wam.exit_radius2, wam.exit_width)
+        pygame.draw.circle(window, wam.exit_color, wam.exit_pos, wam.exit_radius, wam.exit_width)
+        window.blit(wam.exit_button,(963, 19))
+
         pygame.draw.rect(window, self.end_color2, (self.end_pos2, self.end_size2), self.end_width)
         pygame.draw.rect(window, self.end_color, (self.end_pos, self.end_size), self.end_width)
         end_score = self.score_font.render(str(self.score), False, (0, 0, 0))
@@ -210,10 +218,12 @@ def game_design(wam):
     pygame.draw.rect(window, wam.gc_color2, (wam.gc_pos2, wam.gc_size2), wam.gc_width)
     pygame.draw.rect(window, wam.gc_color, (wam.gc_pos, wam.gc_size), wam.gc_width)
     window.blit(wam.gc_text,(85, 170))
+    window.blit(wam.screenfont.render(str(wam.time_left // 1000), False, (0, 0, 0)),  (120, 205))
 
     pygame.draw.rect(window, wam.st_color2, (wam.st_pos2, wam.st_size2), wam.st_width)
     pygame.draw.rect(window, wam.st_color, (wam.st_pos, wam.st_size), wam.st_width)
     window.blit(wam.st_text,(705, 170))
+    window.blit(wam.st_score, (735, 205))
 
     pygame.draw.circle(window, wam.exit_color2, wam.exit_pos, wam.exit_radius2, wam.exit_width)
     pygame.draw.circle(window, wam.exit_color, wam.exit_pos, wam.exit_radius, wam.exit_width)
@@ -243,6 +253,7 @@ while True:
                     rectangle = pygame.Rect(wam.gh_list[x].gh_pos, wam.gh_list[x].gh_size)
                     if rectangle.collidepoint(event.pos):
                         wam.score += 10
+                        wam.st_score = wam.screenfont.render(str(wam.score), False, (0, 0, 0))
                         wam.remove_groundhog(x)
                         break
 
