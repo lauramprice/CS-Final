@@ -1,6 +1,7 @@
 
 import random
 import pygame
+import math
 
 pygame.init()
 pygame.font.init() 
@@ -241,6 +242,7 @@ def play(window):
     wam = WAM(window)
     wam.generate_groundhog(wam.gh_num)
 
+
     while True:
 
         game_design(wam)
@@ -259,9 +261,7 @@ def play(window):
                             wam.remove_groundhog(x)
                             break
 
-                circle = pygame.draw.circle(wam.window, wam.exit_color2, wam.exit_pos, wam.exit_radius2, wam.exit_width)
-                if event.pos in circle:
-                    pygame.quit()
+                if math.sqrt((event.pos[0]-wam.exit_pos[0])**2 + (event.pos[1]-wam.exit_pos[1])**2) < wam.exit_radius2:
                     return
 
 
