@@ -2,6 +2,7 @@
 import random
 import pygame
 import math
+import game_menu
 
 pygame.init()
 pygame.font.init() 
@@ -262,7 +263,7 @@ def play(window):
                             break
 
                 if math.sqrt((event.pos[0]-wam.exit_pos[0])**2 + (event.pos[1]-wam.exit_pos[1])**2) < wam.exit_radius2:
-                    return
+                    return game_menu.menu()
 
 
         pygame.display.flip()
