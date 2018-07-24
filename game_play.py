@@ -1,20 +1,19 @@
 
 import random
 import pygame
+
 pygame.init()
 pygame.font.init() 
 
-window_size = [1000,900]
-window = pygame.display.set_mode(window_size)
-
 class Hole(object):
 
-    def __init__(self, pos, size, color, width):
+    def __init__(self, pos, size, color, width, window):
         """Stores all of the above information about the groundhog hole"""
         self.pos = list(pos)
         self.size = list(size)
         self.color = list(color)
         self.width = width
+        self.window = window
         
     def __repr__(self):
         """ Displays groundhog data in an organized format"""
@@ -23,7 +22,7 @@ class Hole(object):
 
     def draw_hole(self):
         """ Draws the groundhog holes"""
-        pygame.draw.ellipse(window, self.color, self.pos + self.size, self.width)
+        pygame.draw.ellipse(self.window, self.color, self.pos + self.size, self.width)
 
 class Groundhog(object):
 
@@ -43,8 +42,9 @@ class Groundhog(object):
 
 class WAM(object):
 
-    def __init__(self):
+    def __init__(self, window):
         """Window Background"""
+        self.window = window
         self.background = pygame.image.load('/home/laprice/cscamp/CS-Final/library.JPG').convert()
         self.background = pygame.transform.scale(self.background,(1000,900))
         
@@ -129,17 +129,17 @@ class WAM(object):
         holes_list = []
 
         for x in range(n):
-            draw_h = Hole([self.row1_x_hole_pos] + [self.row1_y_hole_pos], self.row1_size, self.hole_color, self.hole_width)
+            draw_h = Hole([self.row1_x_hole_pos] + [self.row1_y_hole_pos], self.row1_size, self.hole_color, self.hole_width, self.window)
             holes_list += [draw_h]
             self.row1_x_hole_pos += 115
 
         for x in range(n):
-            draw_h2 = Hole([self.row2_x_hole_pos] + [self.row2_y_hole_pos], self.row2_size, self.hole_color, self.hole_width)
+            draw_h2 = Hole([self.row2_x_hole_pos] + [self.row2_y_hole_pos], self.row2_size, self.hole_color, self.hole_width, self.window)
             holes_list += [draw_h2]
             self.row2_x_hole_pos += 130
 
         for x in range(n):
-            draw_h3 = Hole([self.row3_x_hole_pos] + [self.row3_y_hole_pos], self.row3_size, self.hole_color, self.hole_width)
+            draw_h3 = Hole([self.row3_x_hole_pos] + [self.row3_y_hole_pos], self.row3_size, self.hole_color, self.hole_width, self.window)
             holes_list += [draw_h3]
             self.row3_x_hole_pos += 160
     
@@ -192,43 +192,42 @@ class WAM(object):
             self.generate_endscreen()
     
     def generate_endscreen(self):
-        window.blit(wam.background, (0, 0))
+        self.window.blit(wam.background, (0, 0))
 
-        pygame.draw.circle(window, wam.exit_color2, wam.exit_pos, wam.exit_radius2, wam.exit_width)
-        pygame.draw.circle(window, wam.exit_color, wam.exit_pos, wam.exit_radius, wam.exit_width)
-        window.blit(wam.exit_button,(963, 19))
+        pygame.draw.circle(self.window, wam.exit_color2, wam.exit_pos, wam.exit_radius2, wam.exit_width)
+        pygame.draw.circle(self.window, wam.exit_color, wam.exit_pos, wam.exit_radius, wam.exit_width)
+        self.window.blit(wam.exit_button,(963, 19))
 
-        pygame.draw.rect(window, self.end_color2, (self.end_pos2, self.end_size2), self.end_width)
-        pygame.draw.rect(window, self.end_color, (self.end_pos, self.end_size), self.end_width)
+        pygame.draw.rect(self.window, self.end_color2, (self.end_pos2, self.end_size2), self.end_width)
+        pygame.draw.rect(self.window, self.end_color, (self.end_pos, self.end_size), self.end_width)
         end_score = self.score_font.render(str(self.score), False, (0, 0, 0))
 
-        window.blit(self.end_text, (300, 350))
-        window.blit(end_score, (455, 425))
-        window.blit(self.end_text2, (380, 520))
+        self.window.blit(self.end_text, (300, 350))
+        self.window.blit(end_score, (455, 425))
+        self.window.blit(self.end_text2, (380, 520))
         
 
-wam = WAM()
-wam.generate_groundhog(wam.gh_num)
+
 
 def game_design(wam):
     """ Runs the essential game features necessary every time"""
 
-    window.blit(wam.background, (0, 0))
+    wam.window.blit(wam.background, (0, 0))
 
-    pygame.draw.rect(window, wam.gc_color2, (wam.gc_pos2, wam.gc_size2), wam.gc_width)
-    pygame.draw.rect(window, wam.gc_color, (wam.gc_pos, wam.gc_size), wam.gc_width)
-    window.blit(wam.gc_text,(85, 170))
-    window.blit(wam.screenfont.render(str(wam.time_left // 1000), False, (0, 0, 0)),  (120, 205))
+    pygame.draw.rect(wam.window, wam.gc_color2, (wam.gc_pos2, wam.gc_size2), wam.gc_width)
+    pygame.draw.rect(wam.window, wam.gc_color, (wam.gc_pos, wam.gc_size), wam.gc_width)
+    wam.window.blit(wam.gc_text,(85, 170))
+    wam.window.blit(wam.screenfont.render(str(wam.time_left // 1000), False, (0, 0, 0)),  (120, 205))
 
-    pygame.draw.rect(window, wam.st_color2, (wam.st_pos2, wam.st_size2), wam.st_width)
-    pygame.draw.rect(window, wam.st_color, (wam.st_pos, wam.st_size), wam.st_width)
-    window.blit(wam.st_text,(705, 170))
-    window.blit(wam.st_score, (735, 205))
+    pygame.draw.rect(wam.window, wam.st_color2, (wam.st_pos2, wam.st_size2), wam.st_width)
+    pygame.draw.rect(wam.window, wam.st_color, (wam.st_pos, wam.st_size), wam.st_width)
+    wam.window.blit(wam.st_text,(705, 170))
+    wam.window.blit(wam.st_score, (735, 205))
 
-    pygame.draw.circle(window, wam.exit_color2, wam.exit_pos, wam.exit_radius2, wam.exit_width)
-    pygame.draw.circle(window, wam.exit_color, wam.exit_pos, wam.exit_radius, wam.exit_width)
+    pygame.draw.circle(wam.window, wam.exit_color2, wam.exit_pos, wam.exit_radius2, wam.exit_width)
+    pygame.draw.circle(wam.window, wam.exit_color, wam.exit_pos, wam.exit_radius, wam.exit_width)
 
-    window.blit(wam.exit_button,(963, 19))
+    wam.window.blit(wam.exit_button,(963, 19))
 
     for x in wam.hole_list:
         x.draw_hole()
@@ -236,33 +235,36 @@ def game_design(wam):
     for x in wam.gh_list:
         if x != 0:
             img, pos = x.draw_gh()
-            window.blit(img, pos)
-            
+            wam.window.blit(img, pos)
 
-while True:
+def play(window):
+    wam = WAM(window)
+    wam.generate_groundhog(wam.gh_num)
 
-    game_design(wam)
-    
-    wam.timing(30)
-    
-    """event loop"""
-    for event in pygame.event.get():
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            for x in range(len(wam.gh_list)):
-                if isinstance(wam.gh_list[x], Groundhog):
-                    rectangle = pygame.Rect(wam.gh_list[x].gh_pos, wam.gh_list[x].gh_size)
-                    if rectangle.collidepoint(event.pos):
-                        wam.score += 10
-                        wam.st_score = wam.screenfont.render(str(wam.score), False, (0, 0, 0))
-                        wam.remove_groundhog(x)
-                        break
+    while True:
 
-            circle = pygame.draw.circle(window, wam.exit_color2, wam.exit_pos, wam.exit_radius2, wam.exit_width)
-            if event.pos in circle:
-                pygame.quit()
-                break
+        game_design(wam)
+        
+        wam.timing(30)
+        
+        """event loop"""
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                for x in range(len(wam.gh_list)):
+                    if isinstance(wam.gh_list[x], Groundhog):
+                        rectangle = pygame.Rect(wam.gh_list[x].gh_pos, wam.gh_list[x].gh_size)
+                        if rectangle.collidepoint(event.pos):
+                            wam.score += 10
+                            wam.st_score = wam.screenfont.render(str(wam.score), False, (0, 0, 0))
+                            wam.remove_groundhog(x)
+                            break
+
+                circle = pygame.draw.circle(wam.window, wam.exit_color2, wam.exit_pos, wam.exit_radius2, wam.exit_width)
+                if event.pos in circle:
+                    pygame.quit()
+                    break
 
 
-    pygame.display.flip()
+        pygame.display.flip()
 
-
+#play(pygame.display.set_mode([1000,900]))
