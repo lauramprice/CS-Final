@@ -15,7 +15,7 @@ rect_Rect3=[245,245,510,310]
 rect_color3=pygame.Color(0,0,0)
 
 rect_Rect4= [250,250, 500,300]
-rect_color4=pygame.Color(255,255,255)
+rect_color4=pygame.Color(246,228,228)
 
 
 instrcirc_pos= (732,270)
@@ -66,10 +66,10 @@ ginstrbtn = pygame.font.SysFont('liberationsansnarrow', 23)
 textsurface3 = ginstrbtn.render('INSTRUCTIONS', False, (0, 0, 0))
 
 ginstrfont= pygame.font.SysFont('lato', 18)
-textsurface4 =ginstrfont.render('Use the MOUSE to click on the groundhogs as they appear. ', False, (242,79,79))
+textsurface4 =ginstrfont.render('Use the MOUSE to click on the groundhogs as they appear. ', False, (0,0,0))
 
 ginstrfont1= pygame.font.SysFont('lato', 23)
-textsurface5 =ginstrfont1.render('Click as many as you can in 30 secs!!', False, (242,79,79))
+textsurface5 =ginstrfont1.render('Click as many as you can in 30 secs!!', False, (0,0,0))
 
 instr_exit = pygame.font.SysFont('Comic Sans MS', 30) 
 textsurface6= instr_exit.render('X', False, (0, 0, 0))
