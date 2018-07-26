@@ -36,7 +36,7 @@ instrcirc_radius4 = 13
 
 
 #Clickable areas that draws another screenn/surface
-
+""" Rectangles that hold the buttons"""
 def Rect2 (surface,rect_color1,rect_Rect1,rect_width2=0):
     pygame.draw.rect(surface,rect_color2,rect_Rect2,rect_width2)
 
@@ -53,8 +53,11 @@ x=pygame.transform.scale(x,(1000,900))
 pygame.font.init() 
 
 """Main page buttons"""
-gtitle = pygame.font.SysFont('liberationsansnarrow', 45)
-textsurface1 = gtitle.render('Whack A Womp womp!', False, (0, 0, 0))
+gtitle0= pygame.font.SysFont('liberationsansnarrow', 45)
+textsurface0 = gtitle0.render('Whack A Womp womp!', False, (163,19,19))
+
+gtitle1 = pygame.font.SysFont('liberationsansnarrow', 45)
+textsurface1 = gtitle1.render('Whack A Womp womp!', False, (0, 0, 0))
 
 gplaybtn= pygame.font.SysFont('liberationsansnarrow', 25)
 textsurface2 = gplaybtn.render('PLAY', False, (0, 0, 0))
@@ -97,7 +100,8 @@ def menu():
             "Window for Main Menu"
             window.fill((0,0,0))
             window.blit(x,(0,0))
-            window.blit(textsurface1,(270,280))
+            window.blit(textsurface0,(273,270))
+            window.blit(textsurface1,(270,270))
             Rect1(window,rect_color, rect_Rect)
             window.blit(textsurface2,(435,383))
             Rect2(window,rect_color2, rect_Rect2)
@@ -115,7 +119,7 @@ def menu():
                 pygame.draw.circle(window,instrcirc_color2,instrcirc_pos2 , instrcirc_radius2,0)  
                 window.blit(textsurface6,(725,261))
                 
-
+            """Window to commence game"""
             if playgame == True:
                 break   
                     
